@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class EmpresaValidacion {
     public Boolean validarNombre(String nombre) throws Exception {
         if (nombre.length() > 30) {
-            throw new Exception("Longitud de caracteres Invalida");
+            return false;
         } else {
             return true;
         }

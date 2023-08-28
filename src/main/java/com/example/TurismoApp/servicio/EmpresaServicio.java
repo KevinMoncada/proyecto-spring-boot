@@ -6,6 +6,7 @@ import com.example.TurismoApp.validaciones.EmpresaValidacion;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class EmpresaServicio {
@@ -22,6 +23,8 @@ public class EmpresaServicio {
             if (this.empresaValidacion.validarNombre(datosARegistrar.getNombre())){
                 throw new Exception("Error en el servicio");
             }
+            //FALTAN MAS VALIDACIONES
+
 
             //SI PASO TODOS LOS IF ESTOY LISTO PARA LLAMAR AL REPO
             return(this.empresaRepositorio.save(datosARegistrar));
@@ -32,7 +35,31 @@ public class EmpresaServicio {
     }
 
     public Compañia modificarEmpresa(Integer id, Compañia datosAModificar) throws Exception{
-        return null;
+        try {
+        //VALIDAMOS LA INFORMACION
+            if (!this.empresaValidacion.validarNombre(datosAModificar.getNombre())){
+                throw new Exception("Error en el dato entregado");
+            }
+
+            //BUSCAR QUE LA EMPRESA QUE TIENE EL ID QUE ENVIA EL USUARIO EXISTA EN BASES DE DATOS
+            Optional<Compañia>empresaEncontrada=this.empresaRepositorio.findById(id);
+            //PREGUNTO SI LO QUE BUSQUE ESTA VACIO
+            if (empresaEncontrada.isEmpty()){
+                throw new Exception("Empresa no encontrada");
+            }
+            //RUTINA POR SI LA ENCONTRE
+            //1.CONVIERTO EL OPCIONAL EN LA ENTIDAD RESPECTIVA
+            Compañia empresaQueExiste = empresaEncontrada.get();
+
+            //2.A LA EMPRESA QUE EXISTE LE CAMBIO LA INFORMACION QUE EL USUARIO NECESITA
+            empresaQueExiste.setNombre(datosAModificar.getNombre());
+
+            //3.GUARDAR LA INFORMACION QUE SE ACABA DE EDITAR (SET)
+            return (this.empresaRepositorio.save(empresaQueExiste));
+
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
     public Compañia buscarCompañiaPorId(Integer id) throws Exception {
