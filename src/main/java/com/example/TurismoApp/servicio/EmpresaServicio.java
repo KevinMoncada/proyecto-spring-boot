@@ -63,15 +63,40 @@ public class EmpresaServicio {
     }
 
     public Compañia buscarCompañiaPorId(Integer id) throws Exception {
+        try {
+            Optional<Compañia> empresaOpcional = this.empresaRepositorio.findById(id);
+            if (empresaOpcional.isEmpty()){
+                throw new Exception("Empresa no encontrada");
+            }
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
         return null;
     }
 
     public List<Compañia> buscarTodasEmpresas() throws Exception{
-        return null;
+        try {
+            List<Compañia>listaEmpresa= this.empresaRepositorio.findAll();
+            return listaEmpresa;
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
     public Boolean eliminarEmpresa (Integer id) throws Exception{
-        return null;
+        try {
+            Optional<Compañia> empresaOpcional = this.empresaRepositorio.findById(id);
+
+            if (empresaOpcional.isPresent()){
+                this.empresaRepositorio.deleteById(id);
+                return true;
+            }else{
+                throw new Exception("Empresa no encontrada");
+            }
+
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
 

@@ -5,6 +5,7 @@ import com.example.TurismoApp.modelos.Oferta;
 import com.example.TurismoApp.repositorio.RepositorioOferta;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -39,4 +40,43 @@ public class OfertaServicio {
             throw new Exception(error.getMessage());
         }
     }
+
+    public Oferta buscarOfertaPorId(Integer id) throws Exception {
+        try {
+            Optional<Oferta> ofertaOpcional = this.repositorioOferta.findById(id);
+            if (ofertaOpcional.isEmpty()){
+                throw new Exception("No se ha encontrado la oferta solicitada");
+            }
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
+        return null;
+    }
+
+    public List<Oferta> buscarTodasLasOfertas() throws Exception{
+        try {
+            List<Oferta>listaOfertas= this.repositorioOferta.findAll();
+            return listaOfertas;
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
+    }
+
+    public Boolean eliminarOferta (Integer id) throws Exception{
+        try {
+            Optional<Oferta> ofertaOpcional = this.repositorioOferta.findById(id);
+
+            if (ofertaOpcional.isPresent()){
+                this.repositorioOferta.deleteById(id);
+                return true;
+            }else{
+                throw new Exception("Empresa no encontrada");
+            }
+
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
+    }
+
+
 }
