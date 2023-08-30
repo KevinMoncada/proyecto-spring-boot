@@ -4,11 +4,14 @@ import com.example.TurismoApp.modelos.Compañia;
 import com.example.TurismoApp.repositorio.EmpresaRepositorio;
 import com.example.TurismoApp.validaciones.EmpresaValidacion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+
+@Service
 public class EmpresaServicio {
 
     @Autowired
@@ -98,6 +101,4 @@ public class EmpresaServicio {
             throw new Exception(error.getMessage());
         }
     }
-
-
 }
